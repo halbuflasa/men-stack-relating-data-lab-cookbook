@@ -11,7 +11,7 @@ require('./config/database');
 const isSignedIn = require('./middleware/isSignedIn');
 const authController = require('./controllers/auth');
 const recipesController = require('./controllers/recipes.js');
-// const ingredientsController = require('./controllers/ingredients.js');
+const ingredientsController = require('./controllers/ingredients.js');
 
 const app = express();
 const port = process.env.PORT ? process.env.PORT : '3000';
@@ -50,10 +50,11 @@ app.get('/', async (req, res) => {
 // **Routes that need session access**
 app.use('/auth', authController);
 app.use('/recipes', recipesController); // This route can now access req.session
-
+app.use('/ingredients', ingredientsController);
 // Protected Routes (after `isSignedIn` middleware)
 app.use(isSignedIn);
 app.use('/users/:userId/recipes', recipesController);
+app.use('/users/:userId/ingredients', ingredientsController);
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);

@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%=recipe.name%></title>
+    <title><%= recipe.name %></title>
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
 
     <h1><%= recipe.name %></h1>
     <p>Instructions: <%= recipe.instructions %></p>
-    <a href="/recipes/<%=recipe._id%>/edit">Edit this recipe</a>
-    <form action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
+
+    <!-- Display ingredients -->
+    <h2>Ingredients:</h2>
+    <ul>
+      <% recipe.ingredients.forEach(ingredient => { %>
+        <li><%= ingredient.name %></li>
+      <% }) %>
+    </ul>
+
+    <a href="/recipes/<%= recipe._id %>/edit">Edit this recipe</a>
+    <form action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
         <button type="submit">Delete this recipe</button>
-      </form>
+    </form>
 </body>
 </html>
