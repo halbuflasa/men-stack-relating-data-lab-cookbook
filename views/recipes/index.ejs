@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Recipes</title>
+</head>
+<body>
+  <%- include('../partials/_navbar.ejs') %>
+  <h1>Welcome to My Recipes</h1>
+  <a href="/recipes/new">Add a New Recipe</a>
+  <div class="card-container">
+    <% recipe.forEach((recipe) => { %>
+      <h4>
+        This <%= recipe.name %> recipe is owned by <%= recipe.owner.username %>.
+      </h4>
+      <a href="/recipes/<%= recipe._id %>">View more details.</a>
+    <% }) %>
+  </div>
+</body>
+</html>

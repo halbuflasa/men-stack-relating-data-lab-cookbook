@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Add a New Recipe</title>
+  </head>
+  <body>
+    <div class="new-container">
+      <div class="new-form-container">
+        <h1>Add a New Recipe!</h1>
+        <form action="/recipes" method="POST">
+          <label for="name">Recipe Name:</label>
+          <input type="text" name="name" id="name" />
+
+          <label for="instructions">instructions:</label>
+          <textarea id="instructions" name="instructions" rows="4" cols="50">
+            </textarea>
+          <button type="submit">Add Recipe</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

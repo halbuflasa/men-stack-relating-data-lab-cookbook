@@ -8,14 +8,13 @@ require('dotenv').config();
 require('./config/database');
 
 // Controllers
-const authController = require('./controllers/auth');
 const isSignedIn = require('./middleware/isSignedIn');
+const authController = require('./controllers/auth');
+const recipesController = require('./controllers/recipes.js');
+// const ingredientsController = require('./controllers/ingredients.js');
 
 const app = express();
-// Set the port from environment variable or default to 3000
 const port = process.env.PORT ? process.env.PORT : '3000';
-
-// MIDDLEWARE
 
 // Middleware to parse URL-encoded data from forms
 app.use(express.urlencoded({ extended: false }));
@@ -23,6 +22,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 // Morgan for logging HTTP requests
 app.use(morgan('dev'));
+
+// **Session Middleware** - move this before routes
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -34,28 +35,26 @@ app.use(
   })
 );
 
+// Custom Middleware
 app.use(addUserToViews);
 
 // Public Routes
 app.get('/', async (req, res) => {
+  if (req.session.user) {
+    console.log(req.session.user);
+    return res.redirect(`/users/${req.session.user._id}/recipes`);
+  }
   res.render('index.ejs');
 });
 
+// **Routes that need session access**
 app.use('/auth', authController);
+app.use('/recipes', recipesController); // This route can now access req.session
 
-// Protected Routes
+// Protected Routes (after `isSignedIn` middleware)
 app.use(isSignedIn);
-
-app.get('/protected', async (req, res) => {
-  if (req.session.user) {
-    res.send(`Welcome to the party ${req.session.user.username}.`);
-  } else {
-    res.sendStatus(404);
-    // res.send('Sorry, no guests allowed.');
-  }
-});
+app.use('/users/:userId/recipes', recipesController);
 
 app.listen(port, () => {
-  // eslint-disable-next-line no-console
   console.log(`The express app is ready on port ${port}!`);
 });
