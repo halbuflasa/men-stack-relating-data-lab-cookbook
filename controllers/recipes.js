@@ -60,7 +60,7 @@ router.get('/:recipeId', async (req, res) => {
 
 router.delete('/:recipeId', async (req, res) => {
     try {
-      const recipe = await REcipe.findById(req.params.recipeId)
+      const recipe = await Recipe.findById(req.params.recipeId)
   
       if (recipe.owner.equals(req.session.user._id)) {
         await recipe.deleteOne()
